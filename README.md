@@ -13,6 +13,7 @@ For instance, the command to install these dependencies (except azure-ttk-theme)
 `sudo apt install python3 python3-tk systemd`
 
 For azure-ttk-theme, you can download it at [https://github.com/rdbende/Azure-ttk-theme](https://github.com/rdbende/Azure-ttk-theme). This script expects azure.tcl and the corresponding theme folder placed either in the current working directory, or in a custom directory, by passing --theme (eg. `powermenu.py --theme /home/user/.local/azure.tcl`). If this is not the case, the program will show an error and exit.
+A version of this theme is included in the [Releases](https://github.com/crazycatlover98544/python3-powermenu/releases) section, where it is included in the zip file.
 
 ## Screenshot
 ![Screenshot of python3-powermenu script](powermenu_screenshot.png)
