@@ -1,5 +1,5 @@
 # python3-powermenu
-_python3-powermenu_ is a simple python3 script for powering off, restarting, or suspending your computer, rendered in dark mode.
+_python3-powermenu_ is a simple python3 script for powering off, restarting, or suspending your computer.
 
 ## Dependencies
 |Dependencies|Website|
