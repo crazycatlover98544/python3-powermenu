@@ -22,8 +22,14 @@ import tkinter.ttk as ttk
 import sys
 import os
 
+color_theme = True # True=dark, False=light
+if '--light' in sys.argv:
+    color_theme = False
+elif '--dark' in sys.argv:
+    color_theme = True # redundant, but if someone makes this light default, this is to let it apply
+
 root = tk.Tk()
-root.configure(bg='#333333')
+root.configure(bg='#333333' if color_theme else '#ffffff')
 
 screen_width = root.winfo_screenwidth() # Get width/height to center the window
 screen_height = root.winfo_screenheight()
@@ -37,6 +43,7 @@ if '--theme' in sys.argv:
     for item in sys.argv:
         if has_theme_found:
             theme = item
+            break
         else:
             if item == '--theme':
                 has_theme_found = True
@@ -44,10 +51,10 @@ if '--theme' in sys.argv:
 try:
     if 'theme' in globals(): # Probably a better way to do this; I am not bothering.
         root.tk.call('source',theme)
-        root.tk.call('set_theme','dark')
+        root.tk.call('set_theme','dark' if color_theme else 'light')
     else:
         root.tk.call('source','azure.tcl')
-        root.tk.call('set_theme','dark')
+        root.tk.call('set_theme','dark' if color_theme else 'light')
 except (FileNotFoundError,OSError,tk.TclError): # Only tk.TclError is really necessary, but I have added the other 2 just in case.
     root.quit()
     root.destroy()
