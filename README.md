@@ -27,11 +27,24 @@ From version 2.0 onward, _azure-ttk-theme_ is licensed under the MIT license. Ho
 |--no-suspend|Remove the suspend button from the window for this session|
 |--help [--no-gui]|Show the help and exit; if `--no-gui` is passed, then the help will print to the console|
 
+## Configuration
+To configure this program, edit the file in `~/.config/python3-powermenu/config.json` (if there is no config.json file, run the program and it will automatically generate one).
+
+The following options are:
+|Key|Values|
+| --- | --- |
+|themepath|A string pointing to a tcl file, preferably azure.tcl from [_azure-ttk-theme_](https://github.com/rdbende/Azure-ttk-theme)|
+|color|Boolean, `true` if dark mode, `false` if light mode|
+|suspend|Boolean, `true` if you want the Suspend button, `false` if you do not want it|
+
 ## Screenshot
-### Dark Mode
+### With Suspend Button
+#### Dark Mode
 ![Screenshot of python3-powermenu script in dark mode](powermenu_screenshot.png)
-### Light Mode
+#### Light Mode
 ![Screenshot of python3-powermenu script in light mode](powermenu_screenshot_light.png)
+### Without Suspend Button
+![Screenshot of python3-powermenu script in dark mode, without suspend button](powermenu_screenshot_no_suspend.png)
 
 ## License
 This program is licensed under the MIT license. To view this license, open up LICENSE or go to the following URL: [https://opensource.org/license/mit](https://opensource.org/license/mit)
