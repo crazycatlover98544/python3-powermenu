@@ -20,15 +20,52 @@ I am not responsible if this harms your computer.
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import messagebox
+import json
 import sys
 import os
 
-color_theme = True # True=dark, False=light
-suspend_button = True
+user_path = f'{os.path.expanduser('~')}{"" if os.path.expanduser('~')[-1] == "/" else "/"}' # Needlessly complicated, but makes sure that the expanded user path has a '/' at the end; it usually does not (in my testing), but I don't know about other computers
+
+try:
+    os.makedirs(f'{user_path}.config/python3-powermenu/')
+except (FileExistsError, OSError): # I doubt it will raise OSError, but just in case.
+    if '.config' in os.listdir(user_path): # Check these so that way in case the error was due to lacking permissions, the program will not error later on
+        if 'python3-powermenu' in os.listdir(f'{user_path}.config'):
+            pass # The folder already exists
+        else:
+            messagebox.showerror('Folder not Found',f'The folder {user_path}.config/python3-powermenu does not exist.')
+            sys.exit(1)
+    else:
+        messagebox.showerror('Folder not Found',f'The folder {user_path}.config does not exist.')
+        sys.exit(1)
+
+if not 'config.json' in os.listdir(f'{user_path}.config/python3-powermenu'):
+    placeholder_data = {'themepath': False, 'color': True, 'suspend': True}
+    try:
+        with open(f'{user_path}.config/python3-powermenu/config.json','w') as file:
+            json.dump(placeholder_data,file,indent=4)
+    except (FileExistsError, OSError) as e: # I doubt it will raise FileExistsError, but just to be sure.
+        messagebox.showerror('Write Acces Blocked',f'Failed to write defaults to configuration file: {e}.')
+        sys.exit(1)
+    del placeholder_data # Free that RAM
+
+try:
+    with open(f'{user_path}.config/python3-powermenu/config.json','r') as file:
+        configuration = json.load(file)
+except (FileNotFoundError, OSError):
+    messagebox.showerror('Configuration File Missing','The configuration file cannot be found.\nNote: This error should not happen. Please report it at https://github.com/crazycatlover98544/python3-powermenu/issues/.')
+    sys.exit(1)
+
+color_theme = configuration.get('color',True) # True=dark, False=light
+suspend_button = configuration.get('suspend',True)
+
+if configuration.get('themepath',False):
+    theme = configuration.get('themepath',False)
+
 if '--light' in sys.argv:
     color_theme = False
 elif '--dark' in sys.argv:
-    color_theme = True # redundant, but if someone makes this light default, this is to let it apply
+    color_theme = True
 if '--no-suspend' in sys.argv:
     suspend_button = False
 if '--help' in sys.argv:
