@@ -19,22 +19,48 @@ I am not responsible if this harms your computer.
 
 import tkinter as tk
 import tkinter.ttk as ttk
+from tkinter import messagebox
 import sys
 import os
 
 color_theme = True # True=dark, False=light
+suspend_button = True
 if '--light' in sys.argv:
     color_theme = False
 elif '--dark' in sys.argv:
     color_theme = True # redundant, but if someone makes this light default, this is to let it apply
+if '--no-suspend' in sys.argv:
+    suspend_button = False
+if '--help' in sys.argv:
+    if '--no-gui' in sys.argv:
+        print(f'''{sys.argv[0]} help:
+                    The following commands can be used on this program:
+                      COMMAND              EXPLANATION
+                      "--theme [theme]":     Pass a tcl file; expected to be azure-ttk-theme at https://github.com/rdbende/Azure-ttk-theme
+                      "--light":             Force light mode for this session
+                      "--dark":              Force dark mode for this session
+                      "--no-suspend":        Force the removal of the suspend button in the power options for this session; useful for computers that have suspend disabled.
+                      "--help [--no-gui]":   Show this help menu and exit; if --no-gui is passed, it will print the help to the console.
+                    For more information, go to this project's GitHub page at https://github.com/crazycatlover98544/python3-powermenu
+                ''')
+    else: # Maybe in the future, format this better
+        messagebox.showinfo(f'{sys.argv[0].capitalize()} Help',f'''{sys.argv[0]} help:
+                The following commands can be used on this program:
+                "--theme [theme]": Pass a tcl file; expected to be azure-ttk-theme at https://github.com/rdbende/Azure-ttk-theme
+                "--light": Force light mode for this session
+                "--dark": Force dark mode for this session
+                "--no-suspend": Force the removal of the suspend button in the power options for this session; useful for computers that have suspend disabled.
+                "--help [--no-gui]": Show this help menu and exit; if --no-gui is passed, it will print the help to the console.
+                For more information, go to this project's page at https://github.com/crazycatlover98544/python3-powermenu
+                ''')
+    sys.exit(0)
 
 root = tk.Tk()
 root.configure(bg='#333333' if color_theme else '#ffffff')
 
 screen_width = root.winfo_screenwidth() # Get width/height to center the window
 screen_height = root.winfo_screenheight()
-
-root.geometry(f'250x240+{(screen_width//2)-125}+{(screen_height//2)-120}') # "125" and "120" are fixed constants, they are width//2 and height//2, respectively.
+root.geometry(f'250x240+{(screen_width//2)-125}+{(screen_height//2)-120}' if suspend_button else f'250x195+{(screen_width//2)-125}+{(screen_height//2)-97}') # "125", "120", "195", and "97" are fixed constants, they are width//2 and height//2, respectively.
 root.title('Power Options') # This is redundant, but I am still keeping it
 root.overrideredirect(True) # Disable the window bar
 
@@ -94,10 +120,11 @@ poweroff.pack()
 restart = ttk.Button(root,text='Restart',command=reboot) # systemctl reboot
 restart.pack(pady=10)
 
-suspend = ttk.Button(root,text='Suspend',command=func_suspend) # systemctl suspend
-suspend.pack()
+if suspend_button:
+    suspend = ttk.Button(root,text='Suspend',command=func_suspend) # systemctl suspend
+    suspend.pack()
 
 cancel = ttk.Button(root,text='Cancel',command=properquit)
-cancel.pack(pady=10)
+cancel.pack(pady=10 if suspend_button else 0) # Fixes appearance issue; not required per say
 
 root.mainloop()
