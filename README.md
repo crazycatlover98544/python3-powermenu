@@ -30,6 +30,8 @@ From version 2.0 onward, _azure-ttk-theme_ is licensed under the MIT license. Ho
 ## Configuration
 To configure this program, edit the file in `~/.config/python3-powermenu/config.json` (if there is no config.json file, run the program and it will automatically generate one).
 
+For ease of configuration, you may find this project useful, as it lets you configure it with a GUI: [https://github.com/crazycatlover98544/python3-powermenu-config](https://github.com/crazycatlover98544/python3-powermenu-config)
+
 The following options are:
 |Key|Values|
 | --- | --- |
